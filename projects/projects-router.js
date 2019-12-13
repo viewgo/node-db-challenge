@@ -8,6 +8,13 @@ const router = express.Router();
 router.get("/projects", (req, res) => {
   Projects.find()
     .then(projects => {
+      projects.map(project => {
+        if (project.completed === 1) {
+          project.completed = true;
+        } else {
+          project.completed = false;
+        }
+      });
       res.status(200).json(projects);
     })
     .catch(err => {
@@ -22,6 +29,11 @@ router.get("/projects/:id", (req, res) => {
   Projects.findById(id)
     .then(project => {
       if (project) {
+        if (project.completed === 1) {
+          project.completed = true;
+        } else {
+          project.completed = false;
+        }
         res.status(200).json(project);
       } else {
         res
@@ -60,6 +72,13 @@ router.post("/projects", (req, res) => {
 router.get("/tasks", (req, res) => {
   Projects.findAllTasks()
     .then(tasks => {
+      tasks.map(task => {
+        if (task.completed === 1) {
+          task.completed = true;
+        } else {
+          task.completed = false;
+        }
+      });
       res.status(200).json(tasks);
     })
     .catch(err => {
@@ -74,6 +93,11 @@ router.get("/tasks/:id", (req, res) => {
   Projects.findTaskById(id)
     .then(task => {
       if (task) {
+        if (task.completed === 1) {
+          task.completed = true;
+        } else {
+          task.completed = false;
+        }
         res.status(200).json(task);
       } else {
         res.status(404).json({ message: "Could not find task with given id." });
@@ -91,6 +115,13 @@ router.get("/projects/:id/tasks", (req, res) => {
   Projects.findTasksByProjectId(id)
     .then(tasks => {
       if (tasks.length) {
+        tasks.map(task => {
+          if (task.completed === 1) {
+            task.completed = true;
+          } else {
+            task.completed = false;
+          }
+        });
         res.status(200).json(tasks);
       } else {
         res
