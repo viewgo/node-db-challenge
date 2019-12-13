@@ -113,7 +113,7 @@ router.post("/projects/:id/tasks", (req, res) => {
       errorMessage: "Please provide a description for the task."
     });
   } else {
-    Projects.addTask(newTask, id)
+    Projects.addTask(newTask)
       .then(task => {
         res.status(201).json(task);
         Projects.updateProjectTask(id, task.id);
@@ -122,6 +122,78 @@ router.post("/projects/:id/tasks", (req, res) => {
         console.log(err);
         res.status(500).json({
           errorMessage: "Failed to add task"
+        });
+      });
+  }
+});
+
+// ###RESOURCES##//#endregion
+router.get("/resources", (req, res) => {
+  Projects.findAllResources()
+    .then(resources => {
+      res.status(200).json(resources);
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json({ errorMessage: "Failed to get resources" });
+    });
+});
+
+router.get("/resources/:id", (req, res) => {
+  const { id } = req.params;
+
+  Projects.findResourceById(id)
+    .then(resource => {
+      if (resource) {
+        res.status(200).json(resource);
+      } else {
+        res
+          .status(404)
+          .json({ message: "Could not find resource with given id." });
+      }
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json({ errorMessage: "Failed to get resource" });
+    });
+});
+
+router.get("/projects/:id/resources", (req, res) => {
+  const { id } = req.params;
+
+  Projects.findResourcesByProjectId(id)
+    .then(resources => {
+      if (resources.length) {
+        res.status(200).json(resources);
+      } else {
+        res
+          .status(404)
+          .json({ errorMessage: "Could not find resources with given id." });
+      }
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json({ errorMessage: "Failed to get resources" });
+    });
+});
+
+router.post("/projects/:id/resources", (req, res) => {
+  const { id } = req.params;
+  const newResource = req.body;
+
+  if (!newResource.name) {
+    res.status(400).json({
+      errorMessage: "Please provide a name for the resource."
+    });
+  } else {
+    Projects.addResource(newResource, id)
+      .then(resource => {
+        res.status(201).json(resource);
+      })
+      .catch(err => {
+        console.log(err);
+        res.status(500).json({
+          errorMessage: "Failed to add resource"
         });
       });
   }

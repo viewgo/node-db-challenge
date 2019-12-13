@@ -8,7 +8,11 @@ module.exports = {
   findTaskById,
   findTasksByProjectId,
   addTask,
-  updateProjectTask
+  updateProjectTask,
+  findAllResources,
+  findResourceById,
+  findResourcesByProjectId,
+  addResource
 };
 
 function find() {
@@ -75,5 +79,34 @@ function updateProjectTask(project_id, task_id) {
     .insert({ project_id, task_id })
     .then(project_task => {
       console.log(project_task);
+    });
+}
+
+function findAllResources() {
+  return db("resources");
+}
+
+function findResourceById(id) {
+  return db("resources")
+    .where({ id })
+    .first();
+}
+
+function findResourcesByProjectId(id) {
+  console.log(id);
+  /*SELECT r.name, r.description, r.project_id
+FROM resources as r
+WHERE project_id = 1*/
+  return db("resources as r")
+    .select("r.name", "r.description", "r.project_id")
+    .where("r.project_id", id);
+}
+
+function addResource(resource, projectId) {
+  newResource = { ...resource, project_id: projectId };
+  return db("resources")
+    .insert(newResource, "id")
+    .then(([id]) => {
+      return findResourceById(id);
     });
 }

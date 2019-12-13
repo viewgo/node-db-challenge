@@ -6,6 +6,11 @@ exports.seed = function(knex, Promise) {
       description: "push here"
     },
     {
+      project_id: 1,
+      name: "testtest",
+      description: "testtest"
+    },
+    {
       project_id: 2,
       name: "Portfolio Checker Website",
       description: "it'll check your portfolio for you"
