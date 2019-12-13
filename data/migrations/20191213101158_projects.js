@@ -40,7 +40,7 @@ exports.up = function(knex) {
     })
 
     .createTable("projects_tasks", tbl => {
-      tbl.increments();
+      tbl.primary(["project_id", "task_id"]);
       tbl
         .integer("project_id")
         .unsigned()

@@ -7,7 +7,8 @@ module.exports = {
   findAllTasks,
   findTaskById,
   findTasksByProjectId,
-  addTask
+  addTask,
+  updateProjectTask
 };
 
 function find() {
@@ -60,16 +61,19 @@ WHERE pt.project_id = 2*/
     .where("pt.project_id", id);
 }
 
-function addTask(task, projectId) {
+function addTask(task) {
   return db("tasks")
     .insert(task, "id")
     .then(([id]) => {
-      const project_task = { project_id: projectId, task_id: id };
-      console.log(project_task);
-      console.log(db("projects_tasks").insert(project_task));
-      return id;
-    })
-    .then(id => {
       return findTaskById(id);
+    });
+}
+
+function updateProjectTask(project_id, task_id) {
+  console.log(`updating with p_id: ${project_id} and t_id: ${task_id}`);
+  return db("projects_tasks")
+    .insert({ project_id, task_id })
+    .then(project_task => {
+      console.log(project_task);
     });
 }

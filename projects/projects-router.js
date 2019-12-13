@@ -116,6 +116,7 @@ router.post("/projects/:id/tasks", (req, res) => {
     Projects.addTask(newTask, id)
       .then(task => {
         res.status(201).json(task);
+        Projects.updateProjectTask(id, task.id);
       })
       .catch(err => {
         console.log(err);
