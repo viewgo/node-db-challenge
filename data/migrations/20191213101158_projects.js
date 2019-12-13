@@ -21,7 +21,7 @@ exports.up = function(knex) {
       tbl.increments();
 
       tbl
-        .integer("projects_id")
+        .integer("project_id")
         .unsigned()
         .notNullable()
         .references("id")
