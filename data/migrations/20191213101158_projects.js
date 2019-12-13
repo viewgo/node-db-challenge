@@ -6,7 +6,10 @@ exports.up = function(knex) {
 
       tbl.string("name", 255).notNullable();
       tbl.string("description", 255);
-      tbl.boolean("completed").defaultTo(0);
+      tbl
+        .boolean("completed")
+        .notNullable()
+        .defaultTo(false);
     })
 
     .createTable("tasks", tbl => {
@@ -14,7 +17,10 @@ exports.up = function(knex) {
 
       tbl.string("description", 255).notNullable();
       tbl.string("notes", 255);
-      tbl.boolean("completed").defaultTo(0);
+      tbl
+        .boolean("completed")
+        .notNullable()
+        .defaultTo(false);
     })
 
     .createTable("resources", tbl => {
